@@ -26,11 +26,13 @@ DEFAULT_NAME_COMMANDS: Final = None
 SERVICE_NAME_COMMAND: Final = "command"
 SERVICE_NAME_SMARTMOW: Final = "smartmowing"
 
+CAMERA_TYPE: Final = "camera"
 SENSOR_TYPE: Final = "sensor"
 BINARY_SENSOR_TYPE: Final = "binary_sensor"
 VACUUM_TYPE: Final = "vacuum"
-INDEGO_PLATFORMS: Final = [SENSOR_TYPE, BINARY_SENSOR_TYPE, VACUUM_TYPE]
+INDEGO_PLATFORMS: Final = [SENSOR_TYPE, BINARY_SENSOR_TYPE, VACUUM_TYPE, CAMERA_TYPE]
 
+ENTITY_CAMERA: Final = "camera"
 ENTITY_ONLINE: Final = "online"
 ENTITY_UPDATE_AVAILABLE: Final = "update_available"
 ENTITY_ALERT: Final = "alert"
