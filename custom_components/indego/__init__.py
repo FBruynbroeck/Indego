@@ -572,7 +572,7 @@ class IndegoHub:
                 await self._indego_client.update_state(force=True)
             except Exception as e:
                 _LOGGER.info("Update state force got an exception: %s", e)
-            svg = fromstring(lawn_map.decode("utf-8").replace('#FAFAFA', 'transparent'))
+            svg = fromstring(lawn_map.decode("utf-8").replace('#FAFAFA', 'transparent').replace('#CCCCCC', 'transparent'))
             xpos = self._indego_client.state.svg_xPos
             ypos = self._indego_client.state.svg_yPos
             circle = f'<circle cx="{xpos}" cy="{ypos}" r="15" fill="yellow" />'
