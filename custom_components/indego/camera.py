@@ -41,6 +41,11 @@ class IndegoCamera(IndegoEntity, Camera):
         self._svg_map = None
         self.content_type = "image/svg+xml"
 
+    @property
+    def frame_interval(self) -> float:
+        """Return the interval between frames of the mjpeg stream."""
+        return 5.0
+
     async def async_camera_image(
         self, width: int | None = None, height: int | None = None
     ) -> bytes | None:
