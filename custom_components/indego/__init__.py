@@ -627,7 +627,7 @@ class IndegoHub:
             True if self._indego_client.state_description_detail == "Charging" else False
         )
         self.entities[ENTITY_VACUUM].battery_charging = self.entities[ENTITY_BATTERY].charging
-        self.entities[ENTITY_CAMERA].syncing = (
+        self.entities[ENTITY_CAMERA].is_streaming = (
             False if self._indego_client.state_description == "Docked" else True
         )
 
