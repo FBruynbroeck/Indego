@@ -54,7 +54,7 @@ class IndegoCamera(IndegoEntity, Camera):
         if self._svg_map is None or self.is_streaming and (time.time() - self._last_update_time) > self.frame_interval:
             _LOGGER.debug("Sync map")
             self._last_update_time = time.time()
-            self._svg_map = await self._indego_hub.download_map()
+            self._svg_map = await self._indego_hub.download_map(self._svg_map is None)
         return self._svg_map
 
     @Camera.is_streaming.setter

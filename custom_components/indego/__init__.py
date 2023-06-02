@@ -335,6 +335,7 @@ class IndegoHub:
         self._refresh_24h_remover = None
         self._shutdown = False
         self._latest_alert = None
+        self._lawn_map = None
         self.entities = {}
 
         async def async_token_refresh() -> str:
@@ -561,18 +562,18 @@ class IndegoHub:
 
         self._refresh_24h_remover = async_call_later(self._hass, 86400, self.refresh_24h)
 
-    async def download_map(self):
-        lawn_map = None
-        try:
-            lawn_map = await self._indego_client.get(f"alms/{self._indego_client.serial}/map")
-        except Exception as e:
-            _LOGGER.info("Get map got an exception: %s", e)
-        if lawn_map and self._indego_client.state:
+    async def download_map(self, force_refresh_map=False):
+        if self._lawn_map is None or force_refresh_map:
+            try:
+                self._lawn_map = await self._indego_client.get(f"alms/{self._indego_client.serial}/map")
+            except Exception as e:
+                _LOGGER.info("Get map got an exception: %s", e)
+        if self._lawn_map and self._indego_client.state:
             try:
                 await self._indego_client.update_state(force=True)
             except Exception as e:
                 _LOGGER.info("Update state force got an exception: %s", e)
-            svg = fromstring(lawn_map.decode("utf-8").replace('#FAFAFA', 'transparent').replace('#CCCCCC', 'transparent'))
+            svg = fromstring(self._lawn_map.decode("utf-8").replace('#FAFAFA', 'transparent').replace('#CCCCCC', 'transparent'))
             xpos = self._indego_client.state.svg_xPos
             ypos = self._indego_client.state.svg_yPos
             circle = f'<circle cx="{xpos}" cy="{ypos}" r="15" fill="yellow" />'
