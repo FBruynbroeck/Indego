@@ -1,4 +1,5 @@
 import logging
+import time
 
 from homeassistant.components.camera import (
     Camera,
@@ -37,6 +38,7 @@ class IndegoCamera(IndegoEntity, Camera):
         IndegoEntity.__init__(self, CAMERA_SENSOR_FORMAT.format(entity_id), name, "mdi:image", None, device_info)
         Camera.__init__(self)
         self._indego_hub = indego_hub
+        self._last_update_time = 0
         self._svg_map = None
         self.content_type = "image/svg+xml"
 
@@ -49,8 +51,9 @@ class IndegoCamera(IndegoEntity, Camera):
         self, width: int | None = None, height: int | None = None
     ) -> bytes | None:
         """Return a still image response from the camera."""
-        if self._svg_map is None or self.is_streaming:
+        if self._svg_map is None or self.is_streaming and (time.time() - self._last_update_time) > self.frame_interval:
             _LOGGER.debug("Sync map")
+            self._last_update_time = time.time()
             self._svg_map = await self._indego_hub.download_map()
         return self._svg_map
 
